@@ -438,6 +438,26 @@ function openDetail(it){
   document.getElementById('dtPrice').textContent = it.p;
   document.getElementById('dtSub').textContent = it.dist;
   document.getElementById('dtCtaPrice').textContent = it.p.replace('만원','');
+  if(it.fl){
+    var dtFloorEl = document.getElementById('dtFloor');
+    if(dtFloorEl) dtFloorEl.textContent = it.fl;
+    var dtFloorInfoEl = document.getElementById('dtFloorInfo');
+    if(dtFloorInfoEl) dtFloorInfoEl.textContent = it.fl;
+  }
+  if(it.mg){
+    var dtMgEl = document.getElementById('dtMg');
+    if(dtMgEl) dtMgEl.textContent = it.mg;
+    var dtMgInfoEl = document.getElementById('dtMgInfo');
+    if(dtMgInfoEl) dtMgInfoEl.innerHTML = it.mg.replace('관리비 ', '') + ' <u>상세보기</u>';
+  }
+  if(it.py){
+    var dtPyEl = document.getElementById('dtPy');
+    if(dtPyEl) dtPyEl.textContent = it.py;
+  }
+  if(it.m2 && it.py){
+    var dtAreaInfoEl = document.getElementById('dtAreaInfo');
+    if(dtAreaInfoEl) dtAreaInfoEl.textContent = it.m2 + ' (' + it.py + ')';
+  }
   var db = detail.querySelector('.desc-body');
   if(db && it.descHi){
     db.innerHTML =
