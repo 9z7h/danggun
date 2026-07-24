@@ -28,7 +28,7 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
   --phone-scale: min(calc(var(--sw) / 375px), calc(var(--sh) / 812px));
 }
 
-.phone{ position:relative; width:375px; height:812px; overflow:hidden;
+.phone{ position:relative; width:375px; height:812px; overflow:hidden; --safe-b:0px;
   transform: scale(var(--phone-scale)); transform-origin:center center; flex:none; }
 .screen{ position:absolute; inset:0; background:var(--map-bg); overflow:hidden; font-family:var(--font); }
 
@@ -37,6 +37,8 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
   body{ padding:0; background:#000;
     --phone-scale: max(calc(100vw / 375px), calc(100dvh / 812px));
   }
+  /* cover 스케일로 확대된 만큼, 실제 기기의 하단 세이프에어리어도 나눠서 보정 */
+  .phone{ --safe-b: calc(env(safe-area-inset-bottom, 0px) / var(--phone-scale)); }
 }
 
 .map-vp{ position:absolute; inset:0; overflow:hidden; touch-action:none; cursor:grab; }
@@ -115,7 +117,7 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
 /* ===== 하단 탭바 ===== */
 .tab-bar{ position:absolute; left:0; width:375px; bottom:0; z-index:36;
   display:flex; background:#fff; border-top:1px solid #EDEEF0;
-  padding-bottom:env(safe-area-inset-bottom,0); }
+  padding-bottom:var(--safe-b, 0px); }
 .tab-item{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:4px; padding:10px 0 12px; border:none; background:none; cursor:pointer; font-family:inherit;
   font-size:11px; font-weight:600; color:#9AA0A6; transition:color .15s; }
@@ -147,7 +149,7 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
 .sw.off{ background:#D4D6DB; }
 .sw.on::after{ transform:translateX(19px); }
 .toggle .lab{ font-size:16px; font-weight:600; color:var(--ink); }
-.sh-body{ overflow-y:auto; padding:0 20px 30px; }
+.sh-body{ overflow-y:auto; padding:0 20px calc(30px + var(--safe-b, 0px)); }
 
 .lst{ display:flex; gap:14px; padding:18px 0; border-top:1px solid #F0F0F1; cursor:pointer; align-items:flex-start; }
 .lst:first-child{ border-top:none; }
@@ -316,7 +318,7 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
 .review-all{ width:100%; height:50px; margin-top:16px; border:1px solid #e2e3e6; background:#fff; border-radius:12px;
   font-family:inherit; font-size:16px; font-weight:700; color:var(--ink); cursor:pointer; }
 
-.dt-cta{ flex:none; display:flex; align-items:center; gap:14px; padding:10px 16px 22px; border-top:1px solid #f0f0f1; background:#fff; }
+.dt-cta{ flex:none; display:flex; align-items:center; gap:14px; padding:10px 16px calc(22px + var(--safe-b, 0px)); border-top:1px solid #f0f0f1; background:#fff; }
 .dt-cta .favc{ border:none; background:none; cursor:pointer; color:#bcbfc6; padding:4px; }
 .dt-cta .favc.on{ color:#FF5A5F; }
 .dt-cta .favc.on svg path{ fill:#FF5A5F; stroke:#FF5A5F; }
@@ -346,7 +348,7 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
   display:flex; flex-direction:column; justify-content:flex-end;
   pointer-events:none; visibility:hidden; } /* visibility는 JS가 관리 */
 .reason-modal.open{ pointer-events:auto; }
-.rm-card{ background:#fff; border-radius:20px 20px 0 0; padding:16px 20px;
+.rm-card{ background:#fff; border-radius:20px 20px 0 0; padding:16px 20px calc(16px + var(--safe-b, 0px));
   box-shadow:0 -4px 24px rgba(0,0,0,.12); }
 .rm-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:20px; }
 .rm-close{ border:none; background:none; cursor:pointer; flex:none;
