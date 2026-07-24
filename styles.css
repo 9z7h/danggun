@@ -32,6 +32,13 @@ body{font-family:var(--font); background:#cfc9c1; display:flex; align-items:cent
   transform: scale(var(--phone-scale)); transform-origin:center center; flex:none; }
 .screen{ position:absolute; inset:0; background:var(--map-bg); overflow:hidden; font-family:var(--font); }
 
+/* 실제 모바일/터치 기기: 375×812 프레임을 여백 없이 화면 전체에 cover로 채움 */
+@media (hover:none) and (pointer:coarse){
+  body{ padding:0; background:#000;
+    --phone-scale: max(calc(100vw / 375px), calc(100dvh / 812px));
+  }
+}
+
 .map-vp{ position:absolute; inset:0; overflow:hidden; touch-action:none; cursor:grab; }
 .map-vp:active{ cursor:grabbing; }
 .world{ position:absolute; left:0; top:0; width:900px; height:1500px; transform-origin:0 0; will-change:transform; }
