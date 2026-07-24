@@ -584,10 +584,17 @@ var rmConfirmBtn = document.getElementById('rmConfirm');
 rmChips.innerHTML = REASONS.map(function(r){
   return '<button class="rm-chip" type="button">'+r+'</button>';
 }).join('');
+function updateRmConfirmState(){
+  var hasChip = !!rmChips.querySelector('.rm-chip.on');
+  var hasMemo = rmMemo.value.trim().length > 0;
+  var active = hasChip || hasMemo;
+  rmConfirmBtn.classList.toggle('active', active);
+  rmConfirmBtn.disabled = !active;
+}
 rmChips.querySelectorAll('.rm-chip').forEach(function(c){
-  c.addEventListener('click', function(){ c.classList.toggle('on'); });
+  c.addEventListener('click', function(){ c.classList.toggle('on'); updateRmConfirmState(); });
 });
-rmMemo.addEventListener('input', function(){ rmCount.textContent = rmMemo.value.length + ' / 200'; });
+rmMemo.addEventListener('input', function(){ rmCount.textContent = rmMemo.value.length + ' / 200'; updateRmConfirmState(); });
 var rmCard = reasonModal.querySelector('.rm-card');
 var reasonModalItem = null;
 var lastFavEl = null;
@@ -607,6 +614,7 @@ function openReasonModal(item){
   /* 변경 감지용 스냅샷 */
   rmOriginalReasons = preReasons.slice();
   rmOriginalMemo = preMemo;
+  updateRmConfirmState();
   rmOverlay.classList.add('open');
   reasonModal.style.visibility = 'visible';
   reasonModal.style.pointerEvents = 'auto';
@@ -683,19 +691,32 @@ on('rmConfirm', function(){
   }
 });
 function cancelReasonModal(){
-  /* 리스트 카드 하트 → 취소 시 하트 OFF 복원 (WISH에 없으면) */
-  if(lastFavEl && reasonModalItem && !reasonModalItem.ph){
-    if(!WISH.some(function(w){ return w._pool === reasonModalItem; }))
-      lastFavEl.classList.remove('on');
-  }
-  /* 상세 하트 → 취소 시 WISH 상태로 복원 */
-  if(!reasonModalItem){
-    var dtFavEl2 = document.getElementById('dtFav');
-    if(dtFavEl2) dtFavEl2.classList.toggle('on', WISH.some(function(w){ return w._pool === currentDetailItem; }));
+  /* X/배경으로 닫아도 매물은 관심목록에 저장하되, 이유·메모(관심기록)는 저장하지 않음 */
+  if(reasonModalItem){
+    var isWishEdit = !!reasonModalItem.ph;
+    if(!isWishEdit){
+      var already = WISH.some(function(w){ return w._pool === reasonModalItem; });
+      if(!already) WISH.unshift(poolToWish(reasonModalItem, [], ''));
+      closeReasonModal();
+      if(!already) showSnackbar('관심목록에 추가했어요.', '바로가기', openWishlist, 4000);
+      lastFavEl = null;
+      return;
+    }
+  } else {
+    var src = currentDetailItem;
+    if(src){
+      var alreadyDt = WISH.some(function(w){ return w._pool === src; });
+      if(!alreadyDt) WISH.unshift(poolToWish(src, [], ''));
+      closeReasonModal();
+      if(!alreadyDt) showSnackbar('관심목록에 추가했어요.', '바로가기', openWishlist, 4000, 98);
+      lastFavEl = null;
+      return;
+    }
   }
   lastFavEl = null;
   closeReasonModal();
 }
+on('rmClose', cancelReasonModal);
 rmOverlay.addEventListener('click', cancelReasonModal);
 reasonModal.addEventListener('click', function(e){
   if(!reasonModal.querySelector('.rm-card').contains(e.target)) cancelReasonModal();

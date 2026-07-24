@@ -355,12 +355,13 @@
       <div class="rm-overlay" id="rmOverlay"></div>
       <div class="reason-modal" id="reasonModal" role="dialog" aria-modal="true" aria-label="관심 기록">
         <div class="rm-card">
-          <div class="rm-handle"></div>
           <div class="rm-head">
+            <button class="rm-close" id="rmClose" aria-label="닫기">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#868B94" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+            </button>
             <h3>관심 기록</h3>
-            <button class="rm-confirm" id="rmConfirm">저장</button>
+            <button class="rm-confirm" id="rmConfirm">확인</button>
           </div>
-          <p class="rm-sub">마음에 든 이유를 남겨보세요.</p>
           <div class="rm-chips" id="rmChips"></div>
           <div class="rm-memo">
             <textarea id="rmMemo" maxlength="200" placeholder="예) 회사까지 20분, 크기 6평"></textarea>
