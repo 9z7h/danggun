@@ -163,8 +163,8 @@ function listingCard(it, i){
   return '<div class="lst" data-i="'+i+'">'
     + '<div class="ph">'+thumbImg(it, i)+viewedOverlay+'</div>'
     + '<div class="info">'
-    +   '<div class="ptop"><div class="price">'+it.p+'</div>'
-    +     '<button class="fav" aria-label="찜">'+IC_HEART_O+'</button></div>'
+    +   '<button class="fav" aria-label="찜">'+IC_HEART_O+'</button>'
+    +   '<div class="price">'+it.p+'</div>'
     +   '<div class="meta">'+it.k+' · '+area+' · '+it.fl+'</div>'
     +   '<div class="meta sub">'+it.mg+' · '+it.dist+'</div>'
     +   (it.best ? '<div class="badge2">우수 중개소</div>' : '')
@@ -642,7 +642,7 @@ function poolToWish(it, reasons, memo){
   return {
     img: (it.imgs && it.imgs.length) ? it.imgs[0] : null,
     ph: 'room',
-    t: it.k + ' · ' + it.m2 + ' · ' + it.fl,
+    t: it.k,
     desc: it.mg + ' · ' + it.dist,
     loc: '관악구 ' + (it.dong || '봉천동'),
     tm: '방금 전',
@@ -774,16 +774,12 @@ function witemHTML(it){
     + '<div class="wcard-top">'
     +   '<div class="wph">'+(it.img ? '<img src="'+it.img+'" alt="" draggable="false" loading="lazy">' : wPhoto(it.ph))+'</div>'
     +   '<div class="winfo">'
-    +     '<div class="wtop">'
-    +       '<div class="wprice">'+it.p+'</div>'
-    +       '<button class="wheart" aria-label="찜 취소"><svg width="24" height="24" viewBox="0 0 24 24" fill="#FF6F0F"><path d="M12 20.5s-7-4.4-9.3-8.4C1 8.7 3.2 5.5 6.5 5.5 8.7 5.5 12 8 12 8s3.3-2.5 5.5-2.5C20.8 5.5 23 8.7 21.3 12.1 19 16.1 12 20.5 12 20.5z"/></svg></button>'
-    +     '</div>'
+    +     '<button class="wheart" aria-label="찜 취소"><svg width="24" height="24" viewBox="0 0 24 24" fill="#FF6F0F"><path d="M12 20.5s-7-4.4-9.3-8.4C1 8.7 3.2 5.5 6.5 5.5 8.7 5.5 12 8 12 8s3.3-2.5 5.5-2.5C20.8 5.5 23 8.7 21.3 12.1 19 16.1 12 20.5 12 20.5z"/></svg></button>'
     +     '<div class="wsub1">'+it.t+'</div>'
-    +     (it.desc ? '<div class="wsub2">'+it.desc+'</div>' : '')
+    +     '<div class="wprice">'+it.p+'</div>'
+    +     '<div class="wloc">'+it.loc+' · '+it.tm+'</div>'
     +     (chips ? '<div class="wrchips">'+chips+'</div>' : '')
-    +     '<div class="wfoot"><span class="wloc">'+it.loc+' · '+it.tm+'</span>'
-    +       '<span class="wlike">'+GRAY_HEART+it.like+'</span>'
-    +     '</div>'
+    +     (it.memo ? '<div class="wmemotext">&quot;<span class="wmemo-body">'+it.memo+'</span>&quot;</div>' : '')
     +   '</div>'
     + '</div>'
     + '<div class="wcard-btns">'
